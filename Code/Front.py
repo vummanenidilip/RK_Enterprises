@@ -53,7 +53,19 @@ if uploaded_file is not None:
 
         # Step 7: Show cleaned data
         st.success("✅ Processed Successfully!")
-        st.dataframe(final_data)
+
+        # Add a search box
+        search_query = st.text_input("🔍 Search by Name or Phone Number", "")
+
+        # Filter data based on the search query
+        if search_query:
+            filtered_data = final_data[
+                final_data['Particulars'].str.contains(search_query, case=False, na=False) |
+                final_data['Phone Number'].str.contains(search_query, case=False, na=False)
+            ]
+            st.dataframe(filtered_data)
+        else:
+            st.dataframe(final_data)
 
         # Step 8: Prepare for download
         csv_buffer = io.StringIO()
